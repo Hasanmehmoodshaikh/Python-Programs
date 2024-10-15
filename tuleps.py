@@ -1,0 +1,10 @@
+mytuple = ('mayur','jhon','jack','bob','adnan','suraj')
+print(mytuple)
+print(len(mytuple))
+print(type(mytuple))
+print("____________________")
+
+demo =tuple((111,222,333,444))
+print(demo)
+print(len(demo))
+print(type(demo))

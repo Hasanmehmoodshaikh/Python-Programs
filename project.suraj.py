@@ -12,25 +12,28 @@ def viewAll():
      print("                                                                                                ")
      print("________________________________")
      print(mylist[i])
+     print("                                                                                                ")
 #_______________________________________________________#
 def viewSingle(EMPLOYEE_NAME):
   mydict=(open("EMPLOYEE_MANAGEMENT_SYSTEM","r"))
   print(EMPLOYEE_NAME)
-
+  flag=False
   for i in mydict:
+
      i=i.strip()
      if EMPLOYEE_NAME in i:
+      flag=True
       print("                                                                                                ")
       print("________________________________")
       print(i)
       print("                                                                                                ")
-  if not(EMPLOYEE_NAME  in i):
+  if flag==False:
       print("DATA IS NOT EXIST")
       print("                 ")
 #_______________________________________________________#    
 def deleteEmployee(EMPLOYEE_NAME,EMPLOYEE_CITY):
   mydict=(open("EMPLOYEE_MANAGEMENT_SYSTEM","r"))
-
+  flag=False
   data=mydict.readlines()
   X=[]
   for i in data:
@@ -38,7 +41,12 @@ def deleteEmployee(EMPLOYEE_NAME,EMPLOYEE_CITY):
 
     if not(record['NAME']==EMPLOYEE_NAME and record['CITY']==EMPLOYEE_CITY):
          X.append(i)
-  if (record['NAME']==EMPLOYEE_NAME and record['CITY']==EMPLOYEE_CITY):
+
+    else:
+      flag=True
+
+
+  if flag==True:
       print("--------------DATA IS DELETED--------------")
       print("                                           ")
   else:
@@ -50,36 +58,42 @@ def deleteEmployee(EMPLOYEE_NAME,EMPLOYEE_CITY):
 def changeEmployeeDetails(EMPLOYEE_NAME,EMPLOYEE_CITY):
   mydict=(open("EMPLOYEE_MANAGEMENT_SYSTEM","r"))
 
-  data=mydict.readlines()
+  lines=mydict.readlines()
   X=[]
-  for i in data:
-    record=eval(i.strip())
+  flag=False
 
-    if not(record['NAME']==EMPLOYEE_NAME and record['CITY']==EMPLOYEE_CITY):
-         X.append(i)
-  if (record['NAME']==EMPLOYEE_NAME and record['CITY']==EMPLOYEE_CITY):
-      print("                                           ")
+  for i in range(len(lines)):
+   line=lines[i].strip()
+   if line:
+      data=eval(line)
+
+      if data["NAME"]==EMPLOYEE_NAME and data["CITY"]==EMPLOYEE_CITY:
+
+         new_id=int(input("ENTER NEW ID - "))
+         new_name=(input("ENTER NEW NAME - "))
+         new_city=(input("ENTER NEW CITY - "))
+         new_salary=int(input("ENTER NEW  SALARY - "))
+         new_name=new_name.upper()
+         new_city=new_city.upper()
+         flag=True
+         data["ID"]=new_id
+         data["NAME"]= new_name
+         data["CITY"]= new_city
+         data["SALARY"]=  new_salary
+         lines[i]=str(data) +'\n'
+
+  if flag==True:
+     print("                                             ")
+     print("---------------DATA IS CHANGED---------------")
   else:
-      print("???? DATA IS NOT EXIST")
-      print("                                            ")   
-  dict=(open("EMPLOYEE_MANAGEMENT_SYSTEM","w"))   
-  dict.writelines(X)
-  if (record['NAME']==EMPLOYEE_NAME and record['CITY']==EMPLOYEE_CITY):
-    try:
-      NEW_EMPLOYEE_ID=int(input("ENTER NEW EMPLOYEE_ID - "))
-      NEW_EMPLOYEE_NAME=(input("ENTER NEW EMPLOYEE_NAME - "))
-      NEW_EMPLOYEE_CITY=(input("ENTER NEW EMPLOYEE_CITY - "))
-      NEW_EMPLOYEE_SALARY=int(input("ENTER NEW EMPLOYEE_SALARY - "))
-    except ValueError:
-        print("???? PLEASE ENTER ID AND SALARY IN NUMBERS")
-    MYDICT=open("EMPLOYEE_MANAGEMENT_SYSTEM" ,"a")
-    data={"ID":NEW_EMPLOYEE_ID,"NAME":NEW_EMPLOYEE_NAME,"CITY":NEW_EMPLOYEE_CITY,"SALARY":NEW_EMPLOYEE_SALARY}
-    x=str(data)
-    x=x.upper()
-    MYDICT.write(f"{x}\n")
-    print("                                         ")
-    print("-------------DATA IS CHANGED-------------")
-    print("                                          ")
+     print("???? DATA IS NOT EXIST")
+     print("                                            ")   
+
+  MYDICT=open("EMPLOYEE_MANAGEMENT_SYSTEM","w")
+  MYDICT.writelines(lines)
+
+
+
 
 #_______________________________________________________#
 #_______________________________________________________#  
@@ -99,14 +113,16 @@ while X=='Y':
   except:
      print("???PLEASE SELECT IN NUMBERS")
 
+
   match(CHOICE):
     case 1:
       try:
          EMPLOYEE_ID=int(input("ENTER EMPLOYEE ID -"))
-         EMOPLOYEE_NAME= input("ENTER EMPLOYEE NAME - ")
+         EMPLOYEE_NAME= input("ENTER EMPLOYEE NAME - ")
          EMPLOYEE_CITY=input("ENTER EMPLOYEE CITY - ")
          EMPLOYEE_SALARY=int(input("ENTER EMPLOYEE SALARY -"))
-         addEmployee(EMPLOYEE_ID,EMOPLOYEE_NAME,EMPLOYEE_CITY,EMPLOYEE_SALARY)
+         addEmployee(EMPLOYEE_ID,EMPLOYEE_NAME,EMPLOYEE_CITY,EMPLOYEE_SALARY)
+         print("                                            ")
          print("-----------EMPLOYEE_DETAILS ADDED-----------")
          print("                                            ")
       except ValueError:
@@ -116,24 +132,25 @@ while X=='Y':
        viewAll()
 
     case 3:
-      EMOPLOYEE_NAME=input("ENTER EMPLOYEE_NAME - ")
-      EMOPLOYEE_NAME=EMOPLOYEE_NAME.upper()
-      viewSingle(EMOPLOYEE_NAME)
+      EMPLOYEE_NAME=input("ENTER EMPLOYEE_NAME - ")
+      EMPLOYEE_NAME=EMPLOYEE_NAME.upper()
+      viewSingle(EMPLOYEE_NAME)
 
     case 4:
-      EMOPLOYEE_NAME=input("ENTER EMPLOYEE NAME - ")
+      EMPLOYEE_NAME=input("ENTER EMPLOYEE NAME - ")
       EMPLOYEE_CITY=input("ENTER EMPLOYEE CITY  - ")
-      EMOPLOYEE_NAME=EMOPLOYEE_NAME.upper()
+      EMPLOYEE_NAME=EMPLOYEE_NAME.upper()
       EMPLOYEE_CITY=EMPLOYEE_CITY.upper()
-      deleteEmployee(EMOPLOYEE_NAME,EMPLOYEE_CITY)
+      deleteEmployee(EMPLOYEE_NAME,EMPLOYEE_CITY)
 
     case 5:
-      EMOPLOYEE_NAME=input("ENTER EMPLOYEE NAME - ")
+      EMPLOYEE_NAME=input("ENTER EMPLOYEE NAME - ")
       EMPLOYEE_CITY=input("ENTER EMPLOYEE CITY  - ")
 
-      EMOPLOYEE_NAME=EMOPLOYEE_NAME.upper()
+      EMPLOYEE_NAME=EMPLOYEE_NAME.upper()
       EMPLOYEE_CITY=EMPLOYEE_CITY.upper()
-      changeEmployeeDetails(EMOPLOYEE_NAME,EMPLOYEE_CITY)
+      changeEmployeeDetails(EMPLOYEE_NAME,EMPLOYEE_CITY)
+      print('\n')
 
 
     case 6:
